@@ -181,29 +181,30 @@ public class AVL {
 
       // No a esquerda e no a direita.
       } else {
-         i.esq = antecessor(i, i.esq);
+         i.esq = maiorEsq(i, i.esq);
 		}
 
 		return balancear(i);
 	}
 
+
 	/**
-	 * Metodo para trocar no removido pelo antecessor.
+	 * Metodo para trocar o elemento "removido" pelo maior da esquerda.
 	 * @param i No que teve o elemento removido.
 	 * @param j No da subarvore esquerda.
 	 * @return No em analise, alterado ou nao.
 	 */
-	private No antecessor(No i, No j) {
-
-      // Existe no a direita.
-		if (j.dir != null) {
-         // Caminha para direita.
-			j.dir = antecessor(i, j.dir);
+	private No maiorEsq(No i, No j) {
 
       // Encontrou o maximo da subarvore esquerda.
-		} else {
+		if (j.dir == null) {
 			i.elemento = j.elemento; // Substitui i por j.
 			j = j.esq; // Substitui j por j.ESQ.
+
+      // Existe no a direita.
+		} else {
+         // Caminha para direita.
+			j.dir = maiorEsq(i, j.dir);
 		}
 		return j;
 	}
@@ -240,7 +241,7 @@ public class AVL {
             no = rotacionarDir(no);
 
          }else{
-            throw new Exception("Erro fator de balanceamento (" + fator + ") invalido!"); 
+            throw new Exception("Erro no No(" + no.elemento + ") com fator de balanceamento (" + fator + ") invalido!"); 
          }
       }
 
@@ -255,8 +256,8 @@ public class AVL {
       noEsq.dir = no;
       no.esq = noEsqDir;
 
-      no.setNivel();
-      noEsq.setNivel();
+      no.setNivel();  //Atualizar o nivel do no
+      noEsq.setNivel(); //Atualizar o nivel do noEsq
 
       return noEsq;
    }
@@ -269,8 +270,8 @@ public class AVL {
       noDir.esq = no;
       no.dir = noDirEsq;
 
-      no.setNivel();
-      noDir.setNivel();
+      no.setNivel(); //Atualizar o nivel do no
+      noDir.setNivel(); //Atualizar o nivel do noDir
       return noDir;
    }
 }
